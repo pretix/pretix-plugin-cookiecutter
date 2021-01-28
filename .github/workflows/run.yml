@@ -22,6 +22,9 @@ jobs:
         run: pip3 install cookiecutter
       - name: Run cookiecutter
         run: cookiecutter . --no-input
+      - name: Init git repo (required for check-manifest)
+        run: git init && git add . && git commit -m 'Initial commit'
+        working-directory: pretix-superplugin
       - name: Install pretix
         run: pip3 install pretix
         working-directory: pretix-superplugin
