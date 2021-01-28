@@ -1,0 +1,57 @@
+name: Try result
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  lint:
+    name: isort
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install system dependencies
+        run: sudo apt update && sudo apt install gettext
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache/pip
+          key: {{ "${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}" }}
+          restore-keys: |
+            {{ "${{ runner.os }}-pip-" }}
+      - name: Install cookiecutter
+        run: pip3 install cookiecutter
+      - name: Run cookiecutter
+        run: cookiecutter . --no-input
+      - name: Install Dependencies
+        run: pip3 install pretix isort flake8 black doc-formatter twine check-manifest pytest pytest-django -Ue .
+        working-directory: pretix-superplugin
+      - name: Run isort
+        run: isort -c .
+        working-directory: pretix-superplugin
+      - name: Run flake8
+        run: flake8 .
+        working-directory: pretix-superplugin
+      - name: Run black
+        run: black --check .
+        working-directory: pretix-superplugin
+      - name: Run docformatter
+        run: docformatter --check -r .
+        working-directory: pretix-superplugin
+      - name: Run check-manifest
+        run: check-manifest .
+        working-directory: .
+        working-directory: pretix-superplugin
+      - name: Build package
+        run: python setup.py sdist
+        working-directory: pretix-superplugin
+      - name: Check package
+        run: twine check dist/*
+        working-directory: pretix-superplugin
+      - name: Run tests
+        run: py.test tests
