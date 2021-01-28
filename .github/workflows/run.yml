@@ -45,7 +45,6 @@ jobs:
         working-directory: pretix-superplugin
       - name: Run check-manifest
         run: check-manifest .
-        working-directory: .
         working-directory: pretix-superplugin
       - name: Build package
         run: python setup.py sdist
@@ -55,3 +54,4 @@ jobs:
         working-directory: pretix-superplugin
       - name: Run tests
         run: py.test tests
+        working-directory: pretix-superplugin
