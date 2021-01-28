@@ -23,7 +23,7 @@ jobs:
       - name: Run cookiecutter
         run: cookiecutter . --no-input
       - name: Init git repo (required for check-manifest)
-        run: git config --global user.email "you@example.com" && && git config --global user.name "Your Name" && git init && git add . && git commit -m 'Initial commit'
+        run: git config --global user.email "you@example.com" && git config --global user.name "Your Name" && git init && git add . && git commit -m 'Initial commit'
         working-directory: pretix-superplugin
       - name: Install pretix
         run: pip3 install pretix
