@@ -38,5 +38,5 @@ include-package-data = true
 version = {attr = "{{cookiecutter.module_name}}.__version__"}
 
 [tool.setuptools.packages.find]
-include = ["pretix*"]
+include = ["{{cookiecutter.module_name}}"]
 namespaces = false
